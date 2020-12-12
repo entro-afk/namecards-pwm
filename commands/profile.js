@@ -200,7 +200,7 @@ function firstView(message, requestingUser, targetUser, characterInfo) {
     // "Fashion and Skins Gallery",
     // "Additional Notes
   ];
-  menu_choices = menu_choices.map(choice => !!choice && choice);
+  menu_choices = menu_choices.filter(choice => !!choice);
   let menu_numbered_choices = [];
   let index_menu = 0;
   let reaction_numbers = [];
