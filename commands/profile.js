@@ -339,7 +339,7 @@ function gearView(message, requestingUser, targetUser, characterInfo) {
     ],
     "author": {
       "name": `${requestingUser.username} is navigating ${targetUser.ingameName || 'someone'}'s namecard`
-}
+    }
   };
   return message.reactions.removeAll()
     .then(function(resultMessage) {
@@ -446,23 +446,30 @@ function eidolonView(message, requestingUser, targetUser, characterInfo) {
 function buildSacredBooksSoulstonesView(message, requestingUser, targetUser, characterInfo, process) {
   const title_process = process.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))
   let pictures = [];
+  let timestampMostRecent;
   switch (process) {
     case 'sacred books':
+      timestampMostRecent=characterInfo.sacredbooks[0].last_updated;
       pictures = characterInfo.sacredbooks.map(book => book.sacredbooks_setup);
       break;
     case 'soulstones':
+      timestampMostRecent=characterInfo.soulstones[0].last_updated;
       pictures = characterInfo.soulstones.map(stone => stone.soulstones_pic_link);
       break;
     case 'pneumas':
+      timestampMostRecent=characterInfo.soulstones[0].last_updated;
       pictures = characterInfo.soulstones.map(stone => stone.pneuma_setup);
       break;
     case 'sage and demon':
+      timestampMostRecent=characterInfo.sageAndDemonDistribution[0].last_updated;
       pictures = characterInfo.sageAndDemonDistribution.map(sagedemon => sagedemon.sage_and_demon_pic);
       break;
     case 'miragia store':
+      timestampMostRecent=characterInfo.miragiaStore[0].last_updated;
       pictures = characterInfo.miragiaStore.map(miragia => miragia.miragia_store_pic);
       break;
     case 'artifacts':
+      timestampMostRecent=characterInfo.artifacts[0].last_updated;
       pictures = characterInfo.artifacts.map(pic => pic.artifacts);
       break;
 
@@ -480,7 +487,8 @@ function buildSacredBooksSoulstonesView(message, requestingUser, targetUser, cha
 },
     "image": {
       "url": pictures[0]
-    }
+    },
+    "timestamp": timestampMostRecent
   };
   if (pictures.length >=2) {
     menu_embed["fields"] = [{
@@ -525,9 +533,13 @@ function buildGearView(gear_type, message, requestingUser, targetUser, character
     "color": 7506394,
     "author": {
       "name": `${requestingUser.username} is navigating ${targetUser.ingameName || 'someone'}'s namecard`
-},
+    },
     "image": {
       "url": gearPieceObj.gear_pic
+    },
+    "timestamp": gearPieceObj.last_updated,
+    "footer": {
+      "text": "Last Updated"
     }
   };
   if (gear_type === "ring") {
@@ -589,7 +601,7 @@ function buildEidolonView(eidolonName, message, requestingUser, targetUser, char
     reaction_to_menu_choice_mapping[number_emojis[index_menu]] = choice;
     index_menu++;
   }
-
+  let timestampMostRecent=characterInfo.eidolons[0].last_updated;
   let menu_embed = {
     "title": "**  **",
     "description": `${ingameName}\n${characterIDPortion}`,
@@ -602,7 +614,11 @@ function buildEidolonView(eidolonName, message, requestingUser, targetUser, char
     ],
     "author": {
       "name": `${requestingUser.username} is navigating ${targetUser.ingameName || 'someone'}'s namecard`
-},
+    },
+    "timestamp": timestampMostRecent,
+    "footer": {
+      "text": "Last Updated"
+    }
   };
   return message.reactions.removeAll()
     .then(function(resultMessage) {
