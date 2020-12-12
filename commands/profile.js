@@ -26,7 +26,7 @@ module.exports = {
     let targetUser = requestingUser;
     if (args) {
       if (!isNaN(args[0])) {
-        if (len(args) >= 20) {
+        if (args[0].length >= 20) {
           targetUser = {
             discordID: null,
             characterID: args[0]
