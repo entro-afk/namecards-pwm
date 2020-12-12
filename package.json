@@ -1,0 +1,27 @@
+{
+  "name": "nametagapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nametag.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/entro-afk/nametagapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/entro-afk/nametagapp/issues"
+  },
+  "homepage": "https://github.com/entro-afk/nametagapp#readme",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "canvas": "^2.6.1",
+    "discord.js": "^12.5.1",
+    "node-fetch": "^2.6.1",
+    "pastebin-ts": "^1.2.0",
+    "pg": "^8.5.1"
+  }
+}
