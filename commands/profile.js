@@ -260,7 +260,7 @@ function firstView(message, requestingUser, targetUser, characterInfo) {
             return message.delete()
               .then(() => message.channel.send("", attachment))
           }
-          return ((!message.embeds.length && message.channel.send({embed: menu_embed})) || message.edit("", attachment))
+          return ((!message.embeds.length && message.channel.send({embed: menu_embed})) || message.edit({embed: menu_embed}))
         })
         .then()
         .then(function handleMenuMessage(messageMenu) {
