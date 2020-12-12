@@ -277,9 +277,9 @@ function firstView(message, requestingUser, targetUser, characterInfo) {
                   return eidolonView(targetUser.lastView, requestingUser, targetUser, characterInfo);
                 case "Gear":
                   return gearView(targetUser.lastView, requestingUser, targetUser, characterInfo);
-                case "Sacred Books Setup":
+                case "Sacred Books":
                   return buildSacredBooksSoulstonesView(targetUser.lastView, requestingUser, targetUser, characterInfo, 'sacred books');
-                case "Soulstone Setup":
+                case "Soulstones":
                   return buildSacredBooksSoulstonesView(targetUser.lastView, requestingUser, targetUser, characterInfo, 'soulstones');
                 case "Pneumas":
                   return buildSacredBooksSoulstonesView(targetUser.lastView, requestingUser, targetUser, characterInfo, 'pneumas');
