@@ -83,7 +83,7 @@ def discord_character_mapping():
             if discord_id:
                 discord_id = int(discord_id)
             if character_id:
-                character_id = int(character_id)
+                character_id = character_id
             return jsonify(get_discord_character_mapping(discord_id, character_id))
         else:
             try:
@@ -108,7 +108,7 @@ def discord_character_mapping():
     if request.method == 'PUT':
         discord_character_dict = request.json
         discord_id = discord_character_dict['discord_id'] and int(discord_character_dict['discord_id']) or 0
-        character_id = discord_character_dict['character_id'] and int(discord_character_dict['character_id']) or 0
+        character_id = discord_character_dict['character_id'] and discord_character_dict['character_id'] or '0'
         profile_picture = discord_character_dict['profile_picture']
 
         if profile_picture:
@@ -121,13 +121,13 @@ def upsert_to_discord_character_mapping(discord_id, character_id, ingame_name=No
     try:
         with db.connect() as conn:
             discord_character_table = Table('discordToCharacterID', metadata, autoload=True, autoload_with=conn)
-            update_or_insert_charge_query = f"INSERT INTO pwm.\"discordToCharacterID\" (\"discord_id\", \"character_id\") VALUES ({discord_id or 0}, {character_id or 0} ) ON CONFLICT (\"discord_id\", \"character_id\") DO UPDATE SET \"discord_id\" = {discord_id or 0}, \"character_id\" = {character_id or 0}"
+            update_or_insert_charge_query = f"INSERT INTO pwm.\"discordToCharacterID\" (\"discord_id\", \"character_id\") VALUES ({discord_id or 0}, {character_id or '0'} ) ON CONFLICT (\"discord_id\", \"character_id\") DO UPDATE SET \"discord_id\" = {discord_id or 0}, \"character_id\" = {character_id or '0'}"
             if ingame_name:
-                update_or_insert_charge_query = f"INSERT INTO pwm.\"discordToCharacterID\" (\"discord_id\", \"character_id\", \"ingame_name\") VALUES ({discord_id or 0}, {character_id or 0}, \'{ingame_name}\') ON CONFLICT (\"discord_id\", \"character_id\") DO UPDATE SET \"discord_id\" = {discord_id or 0}, \"character_id\" = {character_id or 0}, \"ingame_name\" = \'{ingame_name}\'"
+                update_or_insert_charge_query = f"INSERT INTO pwm.\"discordToCharacterID\" (\"discord_id\", \"character_id\", \"ingame_name\") VALUES ({discord_id or 0}, {character_id or '0'}, \'{ingame_name}\') ON CONFLICT (\"discord_id\", \"character_id\") DO UPDATE SET \"discord_id\" = {discord_id or 0}, \"character_id\" = {character_id or '0'}, \"ingame_name\" = \'{ingame_name}\'"
 
             result = conn.execute(update_or_insert_charge_query)
             discord_id = discord_id or 0
-            character_id = character_id or 0
+            character_id = character_id or '0'
             select_st = select([discord_character_table]).where(
                 and_(
                     discord_character_table.c.discord_id == discord_id,
@@ -148,13 +148,13 @@ def update_profile_pic(profile_picture, discord_id=None, character_id=None):
     try:
         with db.connect() as conn:
             discord_id = discord_id or 0
-            character_id = character_id or 0
+            character_id = character_id or '0'
             player_character_discord_table = Table('discordToCharacterID', metadata, autoload=True, autoload_with=conn)
             update_query = player_character_discord_table.update()\
                 .values(profile_picture=profile_picture).where(and_(player_character_discord_table.c.discord_id == discord_id, player_character_discord_table.c.character_id == character_id))
             result = conn.execute(update_query)
             discord_id = discord_id or 0
-            character_id = character_id or 0
+            character_id = character_id or '0'
             select_st = select([discord_id]).where(
                 and_(
                     player_character_discord_table.c.discord_id == discord_id,
@@ -179,7 +179,7 @@ def eidolon_stats():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         eidolon_name = query_parameters.get('eidolonName') and " ".join(query_parameters.get('eidolonName').split("%20"))
 
@@ -216,7 +216,7 @@ def eidolon_stats():
         eidolon_dict = request.json
         eidolons_built = []
         discord_id = int(eidolon_dict['discord_id'])
-        character_id = int(eidolon_dict['character_id'])
+        character_id = eidolon_dict['character_id']
 
         try:
             with db.connect() as conn:
@@ -249,14 +249,14 @@ def update_eidolon_stats(eidolon_dict):
     try:
         with db.connect() as conn:
             discord_id = int(eidolon_dict['discord_id'])
-            character_id = int(eidolon_dict['character_id'])
+            character_id = eidolon_dict['character_id']
             eidolon_name = eidolon_dict['eidolon_name']
             player_eidolons_table = Table('eidolonPlayerStats', metadata, autoload=True, autoload_with=conn)
             update_query = player_eidolons_table.update()\
                 .values(discord_id=discord_id or player_eidolons_table.c.discord_id, character_id=character_id or player_eidolons_table.c.character_id, eidolon_name=eidolon_dict['eidolon_name'], eidolon_skills=eidolon_dict['eidolon_skills'] or player_eidolons_table.c.eidolon_skills, eidolon_elixirs=eidolon_dict['eidolon_elixirs'] or player_eidolons_table.c.eidolon_elixirs, last_updated=datetime.datetime.now()).where(and_(player_eidolons_table.c.discord_id == discord_id,player_eidolons_table.c.character_id == character_id, player_eidolons_table.c.eidolon_name == eidolon_name))
             result = conn.execute(update_query)
             discord_id = discord_id or 0
-            character_id = character_id or 0
+            character_id = character_id or '0'
             select_st = select([discord_id]).where(
                 and_(
                     player_eidolons_table.c.discord_id == discord_id,
@@ -278,7 +278,7 @@ def player_eidolon_stats():
     # You might want to return some sort of response...
     query_parameters = request.args
 
-    discord_id = int(query_parameters.get('discordID'))
+    discord_id = query_parameters.get('discordID')
     character_id = query_parameters.get('characterID')
     eidolon_name = query_parameters.get('eidolonName')
 
@@ -306,7 +306,7 @@ def soulstone_stats():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
 
         metadata = MetaData(schema="pwm")
@@ -338,7 +338,7 @@ def soulstone_stats():
     if request.method == 'POST':
         soulstone_dict = request.json
         discord_id = int(soulstone_dict['discord_id'])
-        character_id = int(soulstone_dict['character_id'])
+        character_id = soulstone_dict['character_id']
 
         try:
             with db.connect() as conn:
@@ -369,7 +369,7 @@ def gear_stats():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         gear_type = query_parameters.get('gearType')
         metadata = MetaData(schema="pwm")
@@ -402,7 +402,7 @@ def gear_stats():
     if request.method == 'POST':
         gear_dict = request.json
         discord_id = int(gear_dict['discord_id'])
-        character_id = int(gear_dict['character_id'])
+        character_id = gear_dict['character_id']
         gear_pic = gear_dict['gear_pic']
         text_detected = detect_text_uri(gear_pic)
         possible_gear_types = ['weapon', 'armor', 'pants', 'helmet', 'gloves', 'cape', 'belt', 'pants',
@@ -446,7 +446,7 @@ def update_gear_pic(gear_dict):
     try:
         with db.connect() as conn:
             discord_id = int(gear_dict['discord_id'])
-            character_id = int(gear_dict['character_id'])
+            character_id = gear_dict['character_id']
             former_gear_pic = gear_dict['former_gear_pic']
             gear_pic = gear_dict['gear_pic']
             gear_type = gear_dict['gear_pic']
@@ -455,7 +455,7 @@ def update_gear_pic(gear_dict):
                 .values(discord_id=discord_id or player_gears_table.c.discord_id, character_id=character_id or player_gears_table.c.character_id, gear_pic=gear_pic, gear_type=gear_type or player_gears_table.c.gear_type, last_updated=datetime.datetime.now()).where(and_(player_gears_table.c.discord_id == discord_id,player_gears_table.c.character_id == character_id, player_gears_table.c.gear_pic == former_gear_pic))
             result = conn.execute(update_query)
             discord_id = discord_id or 0
-            character_id = character_id or 0
+            character_id = character_id or '0'
             select_st = select([discord_id]).where(
                 and_(
                     player_gears_table.c.discord_id == discord_id,
@@ -481,7 +481,7 @@ def sacred_book_setups():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
@@ -506,7 +506,7 @@ def sacred_book_setups():
     if request.method == 'POST':
         sacredbook_dict = request.json
         discord_id = int(sacredbook_dict['discord_id'])
-        character_id = int(sacredbook_dict['character_id'])
+        character_id = sacredbook_dict['character_id']
         try:
             with db.connect() as conn:
                 player_sacredbook_table = Table('sacredBooksSetupsPlayerStats', metadata, autoload=True, autoload_with=conn)
@@ -536,7 +536,7 @@ def pneumas_setups():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
@@ -561,7 +561,7 @@ def pneumas_setups():
     if request.method == 'POST':
         pneumas_dict = request.json
         discord_id = int(pneumas_dict['discord_id'])
-        character_id = int(pneumas_dict['character_id'])
+        character_id = pneumas_dict['character_id']
         try:
             with db.connect() as conn:
                 player_pneuma_table = Table('pneumaSetupsPlayerStats', metadata, autoload=True, autoload_with=conn)
@@ -591,7 +591,7 @@ def sage_and_demon_setups():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
@@ -616,7 +616,7 @@ def sage_and_demon_setups():
     if request.method == 'POST':
         sage_and_demon_dict = request.json
         discord_id = int(sage_and_demon_dict['discord_id'])
-        character_id = int(sage_and_demon_dict['character_id'])
+        character_id = sage_and_demon_dict['character_id']
         try:
             with db.connect() as conn:
                 player_sage_and_demon_table = Table('sageAndDemon', metadata, autoload=True, autoload_with=conn)
@@ -646,7 +646,7 @@ def miragia_store_setups():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
@@ -671,7 +671,7 @@ def miragia_store_setups():
     if request.method == 'POST':
         miragia_store_dict = request.json
         discord_id = int(miragia_store_dict['discord_id'])
-        character_id = int(miragia_store_dict['character_id'])
+        character_id = miragia_store_dict['character_id']
         try:
             with db.connect() as conn:
                 player_miragia_store_table = Table('miragiaStorePreview', metadata, autoload=True, autoload_with=conn)
@@ -701,7 +701,7 @@ def artifacts():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
@@ -726,7 +726,7 @@ def artifacts():
     if request.method == 'POST':
         artifacts_store_dict = request.json
         discord_id = int(artifacts_store_dict['discord_id'])
-        character_id = int(artifacts_store_dict['character_id'])
+        character_id = artifacts_store_dict['character_id']
         try:
             with db.connect() as conn:
                 player_artifacts_table = Table('artifacts', metadata, autoload=True, autoload_with=conn)
@@ -757,7 +757,7 @@ def get_gear_type():
         # You might want to return some sort of response...
         query_parameters = request.args
 
-        discord_id = int(query_parameters.get('discordID'))
+        discord_id = query_parameters.get('discordID')
         character_id = query_parameters.get('characterID')
         character_id = query_parameters.get('characterID')
         gear_url = query_parameters.get('url')

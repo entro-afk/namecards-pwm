@@ -99,7 +99,7 @@ const recordEidolonNameOwned = function recordEidolonNameOwned(targetUser, eidol
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "eidolon_name": eidolon_name,
       "eidolon_skills": null,
       "eidolon_elixirs": null
@@ -128,7 +128,7 @@ const recordEidolonSkills = function recordEidolonSkills(targetUser) {
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "eidolon_name": targetUser.currentEidolon.eidolon_name,
       "eidolon_skills": targetUser.currentEidolon.eidolon_skills || null,
       "eidolon_elixirs": targetUser.currentEidolon.eidolon_elixirs || null
@@ -157,7 +157,7 @@ const updateGear = function updateGear(targetUser, former_gear_pic, gear_pic, ge
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "former_gear_pic": former_gear_pic,
       "gear_pic": gear_pic,
       "gear_type": gear_type
@@ -217,7 +217,7 @@ const recordSoulstonePic = function recordSoulstonePic(targetUser, soulstonePicL
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "soulstones_pic_link": soulstonePicLink,
     })
   })
@@ -394,7 +394,7 @@ const recordSacredBookPic = function recordSacredBookPic(targetUser, sacredBookP
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "sacredbooks_setup": sacredBookPicLink,
     })
   })
@@ -421,7 +421,7 @@ const recordPneumaPic = function recordPneumaPic(targetUser, pneumaPicLink) {
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "pneuma_setup": pneumaPicLink,
     })
   })
@@ -448,7 +448,7 @@ const recordArtifacts = function recordArtifacts(targetUser, artifactPicLink) {
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "artifacts": artifactPicLink,
     })
   })
@@ -476,7 +476,7 @@ const recordSageAndDemon = function recordSageAndDemon(targetUser, sageAndDemon)
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "sage_and_demon_pic": sageAndDemon,
     })
   })
@@ -503,7 +503,7 @@ const recordMiragiaStore = function recordMiragiaStore(targetUser, miragiaStoreP
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "miragia_store_pic": miragiaStorePic,
     })
   })
@@ -531,7 +531,7 @@ const recordGearPic = function recordGearPic(targetUser, gearpicLink) {
     },
     body: JSON.stringify({
       "discord_id": targetUser.discordID || 0,
-      "character_id": targetUser.character_id || 0,
+      "character_id": targetUser.characterID || '0',
       "gear_pic": gearpicLink,
     })
   })
