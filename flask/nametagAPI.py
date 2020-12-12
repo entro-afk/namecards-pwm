@@ -279,7 +279,7 @@ def player_eidolon_stats():
     query_parameters = request.args
 
     discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+    character_id = int(query_parameters.get('characterID'))
     eidolon_name = query_parameters.get('eidolonName')
 
     metadata = MetaData(schema="pwm")
