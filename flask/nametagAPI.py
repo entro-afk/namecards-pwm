@@ -180,7 +180,7 @@ def eidolon_stats():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         eidolon_name = query_parameters.get('eidolonName') and " ".join(query_parameters.get('eidolonName').split("%20"))
 
         metadata = MetaData(schema="pwm")
@@ -279,7 +279,7 @@ def player_eidolon_stats():
     query_parameters = request.args
 
     discord_id = int(query_parameters.get('discordID'))
-    character_id = int(query_parameters.get('characterID'))
+    character_id = query_parameters.get('characterID')
     eidolon_name = query_parameters.get('eidolonName')
 
     metadata = MetaData(schema="pwm")
@@ -307,7 +307,7 @@ def soulstone_stats():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
 
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
@@ -370,7 +370,7 @@ def gear_stats():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         gear_type = query_parameters.get('gearType')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
@@ -482,7 +482,7 @@ def sacred_book_setups():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
             try:
@@ -537,7 +537,7 @@ def pneumas_setups():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
             try:
@@ -592,7 +592,7 @@ def sage_and_demon_setups():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
             try:
@@ -647,7 +647,7 @@ def miragia_store_setups():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
             try:
@@ -702,7 +702,7 @@ def artifacts():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         metadata = MetaData(schema="pwm")
         if request.method == 'GET':
             try:
@@ -758,7 +758,7 @@ def get_gear_type():
         query_parameters = request.args
 
         discord_id = int(query_parameters.get('discordID'))
-        character_id = int(query_parameters.get('characterID'))
+        character_id = query_parameters.get('characterID')
         character_id = query_parameters.get('characterID')
         gear_url = query_parameters.get('url')
         pic = urllib.parse.unquote(gear_url)
