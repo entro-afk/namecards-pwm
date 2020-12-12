@@ -552,7 +552,7 @@ function handleEidoReactions(prompt_message, requestingUser, targetUser) {
   return prompt_message.channel.awaitMessages(filter,{max: 1, time: 600000})
     .then(function feedBackNext(reaction_prompt) {
       console.log(requestingUser);
-      let msg_reactions = prompt_message.reactions.cache.filter(reaction => ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'].includes(reaction.emoji.name) && reaction.users.cache.has(requestingUser.id));
+      let msg_reactions = prompt_message.reactions.cache.filter(reaction => ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'goblin','junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'].includes(reaction.emoji.name) && reaction.users.cache.has(requestingUser.id));
       const eido_emoji_mapping = {
         "cucu": "Cucurbit",
         "flamerider": "Flame Rider",
@@ -560,6 +560,7 @@ function handleEidoReactions(prompt_message, requestingUser, targetUser) {
         "oakspirit": "Oak Spirit",
         "spitfire": "Spitfire",
         "siren": "Siren",
+        "goblin": "Goblin",
         "junglewyvern": "Jungle Wyvern",
         "monkeyking": "Monkey King",
         "aeriola": "Aeriola",

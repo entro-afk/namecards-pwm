@@ -374,7 +374,7 @@ function eidolonView(message, requestingUser, targetUser, characterInfo) {
     '1️⃣',
     '2️⃣',
   ];
-  let eidolons = ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'];
+  let eidolons = ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'goblin', 'junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'];
   const eido_emoji_mapping = {
     "Cucurbit": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="cucu"),
     "Flame Rider": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="flamerider"),
@@ -382,6 +382,7 @@ function eidolonView(message, requestingUser, targetUser, characterInfo) {
     "Oak Spirit": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="oakspirit"),
     "Spitfire": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="spitfire"),
     "Siren": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="siren"),
+    "Goblin": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="goblin"),
     "Jungle Wyvern": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="junglewyvern"),
     "Monkey King": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="monkeyking"),
     "Aeriola": targetUser.lastView.author.client.emojis.cache.find(emoji => emoji.name ==="aeriola"),
