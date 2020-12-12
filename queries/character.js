@@ -51,7 +51,7 @@ const addDiscordCharacterMapping = function addDiscordCharacterMapping(discordID
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -79,7 +79,7 @@ const updateProfilePic = function updateProfilePic(discordID, characterID, profi
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -109,7 +109,7 @@ const recordEidolonNameOwned = function recordEidolonNameOwned(targetUser, eidol
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -138,7 +138,7 @@ const recordEidolonSkills = function recordEidolonSkills(targetUser) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -167,7 +167,7 @@ const updateGear = function updateGear(targetUser, former_gear_pic, gear_pic, ge
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -198,7 +198,7 @@ const getSoulstones = function getGears(targetUser) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -225,7 +225,7 @@ const recordSoulstonePic = function recordSoulstonePic(targetUser, soulstonePicL
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -311,7 +311,7 @@ const getPneumaPic = function getPneumaPic(targetUser) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -343,7 +343,7 @@ const getSageAndDemon = function getSageAndDemon(targetUser) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -375,7 +375,7 @@ const getMiragiaStore = function getMiragiaStore(targetUser) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -402,7 +402,7 @@ const recordSacredBookPic = function recordSacredBookPic(targetUser, sacredBookP
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -429,7 +429,7 @@ const recordPneumaPic = function recordPneumaPic(targetUser, pneumaPicLink) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -456,7 +456,7 @@ const recordArtifacts = function recordArtifacts(targetUser, artifactPicLink) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -484,7 +484,7 @@ const recordSageAndDemon = function recordSageAndDemon(targetUser, sageAndDemon)
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -511,7 +511,7 @@ const recordMiragiaStore = function recordMiragiaStore(targetUser, miragiaStoreP
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -539,7 +539,7 @@ const recordGearPic = function recordGearPic(targetUser, gearpicLink) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -575,7 +575,7 @@ const getGears = function getGears(targetUser, gearType) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -601,7 +601,7 @@ const getGearType = function getGearType(targetUser, gearpicLink) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
@@ -641,7 +641,7 @@ const getEidolonsOwned = function getEidolonsOwned(targetUser, eidolon) {
       return response.text()
     })
     .then((question) => JSON.parse(question, (key, value) => {
-      if (["character_id", "discord_id"].includes(key) && typeof value === "string" && value.match(/^\d+$/)) {
+      if (["character_id", "discord_id"].includes(key)) {
         return BigInt(value);
       }
       return value;
