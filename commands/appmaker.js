@@ -211,10 +211,10 @@ function handleQuestion(question, question_embed, call_message, requestingUser, 
 }
 
 function handleEidoSelectionQuestion(question_embed, prompt_message, question, requestingUser, targetUser) {
-  const reaction_eidolons = prompt_message.author.client.emojis.cache.filter(emoji => ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'].includes(emoji.name));
+  const reaction_eidolons = prompt_message.author.client.emojis.cache.filter(emoji => ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'goblin', 'junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'].includes(emoji.name));
   const map = new Map();
   const unique_reaction_eidolons = [];
-  let search_emoji = ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'];
+  let search_emoji = ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'goblin', 'junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'];
   for (const emoji_name of search_emoji) {
     if(!map.has(emoji_name)){
       map.set(emoji_name, true);    // set any value to Map

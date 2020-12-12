@@ -64,7 +64,7 @@ def get_discord_character_mapping(discord_id, character_id):
                 select_st = select([discord_character_table]).where(
                     discord_character_table.c.character_id == character_id)
             res = conn.execute(select_st)
-            gathered_discord_char = [{column: value for column, value in rowproxy.items()} for rowproxy in res][0]
+            gathered_discord_char = [{column: str(value) if isinstance(value, int) else value for column, value in rowproxy.items()} for rowproxy in res][0]
             return gathered_discord_char
     except Exception as err:
         print(err)
@@ -135,7 +135,7 @@ def upsert_to_discord_character_mapping(discord_id, character_id, ingame_name=No
                 )
             )
             res = conn.execute(select_st)
-            gathered_discord_char = [{column: value for column, value in rowproxy.items()} for rowproxy in res][0]
+            gathered_discord_char = [{column: str(value) if isinstance(value, int) else value for column, value in rowproxy.items()} for rowproxy in res][0]
             return gathered_discord_char
     except Exception as err:
         print(err)
@@ -162,7 +162,7 @@ def update_profile_pic(profile_picture, discord_id=None, character_id=None):
                 )
             )
             res = conn.execute(select_st)
-            gathered_discord_char = [{column: value for column, value in rowproxy.items()} for rowproxy in res][0]
+            gathered_discord_char = [{column: str(value) if isinstance(value, int) else value for column, value in rowproxy.items()} for rowproxy in res][0]
             return gathered_discord_char
     except Exception as err:
         print(err)
@@ -265,7 +265,7 @@ def update_eidolon_stats(eidolon_dict):
                 )
             )
             res = conn.execute(select_st)
-            gathered_discord_char = [{column: value for column, value in rowproxy.items()} for rowproxy in res][0]
+            gathered_discord_char = [{column: str(value) if isinstance(value, int) else value for column, value in rowproxy.items()} for rowproxy in res][0]
             return gathered_discord_char
     except Exception as err:
         print(err)
@@ -464,7 +464,7 @@ def update_gear_pic(gear_dict):
                 )
             )
             res = conn.execute(select_st)
-            gathered_discord_char = [{column: value for column, value in rowproxy.items()} for rowproxy in res][0]
+            gathered_discord_char = [{column: str(value) if isinstance(value, int) else value for column, value in rowproxy.items()} for rowproxy in res][0]
             return gathered_discord_char
     except Exception as err:
         print(err)
