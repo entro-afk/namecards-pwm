@@ -578,7 +578,7 @@ function buildEidolonView(eidolonName, message, requestingUser, targetUser, char
     !!eidolonObj.eidolon_skills && "Eidolons Skills",
     !!eidolonObj.eidolon_elixirs && "Eidolons Elixirs",
   ];
-  menu_choices = menu_choices.map(choice => !!choice && choice);
+  menu_choices = menu_choices.filter(choice => !!choice);
   let menu_numbered_choices = [];
   let index_menu = 0;
   let reaction_numbers = ['🏠', "◀️"];;
