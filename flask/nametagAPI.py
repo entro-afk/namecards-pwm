@@ -412,7 +412,7 @@ def gear_stats():
             gear_type = [gear_text.lower() for gear_text in possible_gear_types if
                          gear_text.lower() in text_detected.lower()]
         if gear_type:
-            gear_type = gear_type[0]
+            gear_type = gear_type[-1]
         else:
             gear_type = 'unsorted'
         try:
