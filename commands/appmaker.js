@@ -329,7 +329,7 @@ function handleScreenshots(process, message, requestingUser, targetUser) {
                     return recordGearPic(targetUser, pic.url)
                   }
                   return Promise.each((resultGears), function(resultGear){
-                    if (resultGears.length < 2 && resultGear['gear_type'] === 'rings') {
+                    if (resultGears.length < 2 && resultGear['gear_type'] === 'ring') {
                       return recordGearPic(targetUser, pic.url)
                     }
                     return overrideCurrentGearModal(message, process, requestingUser, targetUser, resultGear)
