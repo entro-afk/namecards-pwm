@@ -327,8 +327,8 @@ function gearView(message, requestingUser, targetUser, characterInfo) {
   ];
   let menu_numbered_choices = [];
   let index_menu = 0;
-  let reaction_numbers = ['🏠', "◀️"];
-  let reaction_to_menu_choice_mapping = {"🏠": "Home" , "◀️": "Back"};
+  let reaction_numbers = ['🏠'];
+  let reaction_to_menu_choice_mapping = {"🏠": "Home" };
   for (let choice of menu_choices) {
     menu_numbered_choices.push(`${number_emojis[index_menu]} ${choice}`);
     reaction_numbers.push(number_emojis[index_menu]);
@@ -578,6 +578,8 @@ function buildGearView(gear_type, message, requestingUser, targetUser, character
           switch(reactionChoice.name) {
             case '🏠':
               return firstView(targetUser.lastView, requestingUser, targetUser, characterInfo);
+            case "◀️":
+              return gearView(targetUser.lastView, requestingUser, targetUser, characterInfo)
           }
         })
     })
