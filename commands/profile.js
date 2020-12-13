@@ -257,8 +257,11 @@ function firstView(message, requestingUser, targetUser, characterInfo) {
 
           const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'profile-image.png');
           if (!!targetUser.profilePicture) {
-            return message.delete()
-              .then(() => message.channel.send("", attachment))
+            if (!message.embeds.length) {
+              return message.channel.send("", attachment)
+            } else {
+              return message.edit({embed: null })
+            }
           }
           return ((!message.embeds.length && message.channel.send({embed: menu_embed})) || message.edit({embed: menu_embed}))
         })
@@ -575,8 +578,6 @@ function buildGearView(gear_type, message, requestingUser, targetUser, character
           switch(reactionChoice.name) {
             case '🏠':
               return firstView(targetUser.lastView, requestingUser, targetUser, characterInfo);
-            case "◀️":
-              return gearView(targetUser.lastView, requestingUser, targetUser, characterInfo)
           }
         })
     })
