@@ -463,8 +463,8 @@ function buildSacredBooksSoulstonesView(message, requestingUser, targetUser, cha
       pictures = characterInfo.soulstones.map(stone => stone.soulstones_pic_link);
       break;
     case 'pneumas':
-      timestampMostRecent=characterInfo.soulstones[0].last_updated;
-      pictures = characterInfo.soulstones.map(stone => stone.pneuma_setup);
+      timestampMostRecent=characterInfo.pneumas[0].last_updated;
+      pictures = characterInfo.pneumas.map(stone => stone.pneuma_setup);
       break;
     case 'sage and demon':
       timestampMostRecent=characterInfo.sageAndDemonDistribution[0].last_updated;
