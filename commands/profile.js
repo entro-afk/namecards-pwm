@@ -87,12 +87,12 @@ module.exports = {
         let characterInfo = {
           eidolons: eidolonsOwned,
           gear: gearPieces,
-          sacredbooks: sacredBookSetups.slice(0, 10),
-          soulstones: soulstoneSetups.slice(0, 10),
-          pneumas: pneumaSetups.slice(0, 3),
-          sageAndDemonDistribution: sageAndDemonDistribution.slice(0, 10),
-          miragiaStore: miragiaStore.slice(0, 10),
-          artifacts: artifacts.slice(0, 10)
+          sacredbooks: sacredBookSetups.slice(0, 5),
+          soulstones: soulstoneSetups.slice(0, 5),
+          pneumas: pneumaSetups.slice(0, 5),
+          sageAndDemonDistribution: sageAndDemonDistribution.slice(0, 5),
+          miragiaStore: miragiaStore.slice(0, 5),
+          artifacts: artifacts.slice(0, 5)
         };
         const designated_pronoun = requestingUser === targetUser ? "your": targetUser.discordID? "<@!"+targetUser.discordID+">'s" :"this Target Seeker's";
         const welcomeEmbed = {
