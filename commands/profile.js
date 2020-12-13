@@ -87,12 +87,12 @@ module.exports = {
         let characterInfo = {
           eidolons: eidolonsOwned,
           gear: gearPieces,
-          sacredbooks: sacredBookSetups,
-          soulstones: soulstoneSetups,
+          sacredbooks: sacredBookSetups.slice(0, 10),
+          soulstones: soulstoneSetups.slice(0, 10),
           pneumas: pneumaSetups.slice(0, 3),
-          sageAndDemonDistribution: sageAndDemonDistribution,
-          miragiaStore: miragiaStore,
-          artifacts: artifacts
+          sageAndDemonDistribution: sageAndDemonDistribution.slice(0, 10),
+          miragiaStore: miragiaStore.slice(0, 10),
+          artifacts: artifacts.slice(0, 10)
         };
         const designated_pronoun = requestingUser === targetUser ? "your": targetUser.discordID? "<@!"+targetUser.discordID+">'s" :"this Target Seeker's";
         const welcomeEmbed = {
@@ -194,7 +194,7 @@ function firstView(message, requestingUser, targetUser, characterInfo) {
     characterInfo.pneumas && characterInfo.pneumas.length && "Pneumas",
     characterInfo.sacredbooks && characterInfo.sacredbooks.length && "Sacred Books",
     characterInfo.soulstones && characterInfo.soulstones.length && "Soulstones",
-    characterInfo.miragiaStore && characterInfo.miragiaStore.length &&   "Artifacts",
+    characterInfo.artifacts && characterInfo.artifacts.length &&   "Artifacts",
     characterInfo.sageAndDemonDistribution && characterInfo.sageAndDemonDistribution.length &&  "Sage & Demon",
     characterInfo.miragiaStore && characterInfo.miragiaStore.length &&   "Miragia Store",
     // "Fashion and Skins Gallery",
