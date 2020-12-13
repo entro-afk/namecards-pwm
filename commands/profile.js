@@ -160,7 +160,7 @@ const applyText = (canvas, text) => {
 
   // Declare a base size of the font
   let fontSize = 48;
-
+  ctx.font = `${fontSize}px Arial Unicode MS`
   do {
     // Assign the font to the context and decrement it so it can be measured again
     ctx.font = `${fontSize -= 10}px Arial Unicode MS`;
