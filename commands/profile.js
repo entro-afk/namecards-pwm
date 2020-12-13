@@ -249,7 +249,7 @@ function firstView(message, requestingUser, targetUser, characterInfo) {
           const plainNumberChoicesString = plainNumberChoices.join("\n");
           let stringPart = plainNumberChoicesString;
           if (!!targetUser.ingameName) {
-            stringPart = `${targetUser.ingameName}'s Stats\n${plainNumberChoicesString}`;
+            stringPart = `${targetUser.ingameName}\n${plainNumberChoicesString}`;
           }
           ctx.font = applyText(canvas, stringPart);
           ctx.fillStyle = '#ffffff';
