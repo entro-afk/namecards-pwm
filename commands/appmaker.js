@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const Promise = require("bluebird");
-const {hoster_application_channel, hosters_apply_logs, pastebin_dev_key, ready_image_author_name, ready_image} = require('../config.json');
+const {hoster_application_channel, hosters_apply_logs, pastebin_dev_key, ready_image_author_name, ready_image, cancelled_session_image} = require('../config.json');
 const {gatherPlayerStatsQuestions, fetchQuestions} = require('../queries/questions');
 const {
   recordEidolonNameOwned,
@@ -23,12 +23,23 @@ const {
 } = require('../queries/character');
 const PastebinAPI = require('pastebin-ts');
 const pastebin = new PastebinAPI(pastebin_dev_key);
+let ongoingAddProfileSessions = {};
 
 module.exports = {
   name: 'addprofile',
   description: 'Menu',
   execute(message, args) {
     let requestingUser = message.author;
+    if (requestingUser.id in ongoingAddProfileSessions) {
+      return message.channel.send(`<@!${requestingUser.id}>, you already have an ongoing session.`)
+        .then((feedbackExistingSessionMessage) => {
+          return Promise.all([
+            message.delete(),
+            feedbackExistingSessionMessage.delete({timeout: 1000})
+          ])
+        })
+    }
+    ongoingAddProfileSessions[requestingUser.id] = true;
     let targetUser = requestingUser;
     if (args) {
       if (!isNaN(args[0])) {
@@ -99,7 +110,7 @@ module.exports = {
               "description": "Please upload a profile picture the bot can use for your name card <a:aeuphoria_bow:775194882607546368>",
               "color": 7506394,
               "footer": {
-                "text": "Please type \"next\" anytime to move on to the next prompt."
+                "text": "Please type \"next\" anytime to move on to the next prompt.\nOr type \"cancel\" to end this application session."
               }
             }
           } else {
@@ -111,13 +122,13 @@ module.exports = {
                 "url": existingMapping.profile_picture
               },
               "footer": {
-                "text": "Please type \"next\" anytime to move on to the next prompt."
+                "text": "Please type \"next\" anytime to move on to the next prompt.\nOr type \"cancel\" to end this application session."
               }
             }
           }
           return !!profileRequestEmbed && message.channel.send({embed: profileRequestEmbed})
             .then(function waitForProfilePic() {
-              filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || m.content.trim().toLowerCase() === "next")
+              filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || ["next", "cancel"].includes(m.content.trim().toLowerCase()));
 
               targetUser.ingameName = existingMapping.ingame_name;
               return message.channel.awaitMessages(filter, {
@@ -130,6 +141,10 @@ module.exports = {
                   if (awaitedMsg.content.trim().toLowerCase() === "next" && !awaitedMsg.attachments.size) {
                     return
                   }
+                  if (awaitedMsg.content.trim().toLowerCase() === "cancel") {
+                    throw('cancel')
+                  }
+
                   if (!!awaitedMsg.attachments.size || !!awaitedMsg.embeds.length) {
                     return updateProfilePic(targetUser.discordID, targetUser.characterID,  !!awaitedMsg.attachments.size && awaitedMsg.attachments.array()[0].url || !!awaitedMsg.embeds.length && awaitedMsg.embeds[0].url)
                   }
@@ -140,9 +155,12 @@ module.exports = {
       .then((existingMapping)=> {
         return Promise.each(fetchQuestions(), function sendQuestion(question) {
           const json_question =JSON.parse(question['question_embed']);
-
           return handleQuestion(question, json_question, message, requestingUser, targetUser)
-            .catch((err)=>console.log(err))
+            .catch((err)=>{
+              if (err === "cancel") {
+                throw(err)
+              }
+            })
         })
 
       })
@@ -158,9 +176,24 @@ module.exports = {
             "text": `This screenshot was taken by ${ready_image_author_name}.`
           }
         };
+        delete ongoingAddProfileSessions[requestingUser.id];
         return message.channel.send({embed: finishingEmbed})
       })
-
+      .catch((err)=> {
+        if (err === "cancel") {
+          const cancelEmbed = {
+            "title": "\u200b",
+            "description": `Okay, <@!${requestingUser.id}>.`,
+            "color": 16426522,
+            "image": {
+              "url": cancelled_session_image.url
+            },
+          };
+          delete ongoingAddProfileSessions[requestingUser.id];
+          return message.channel.send({embed: cancelEmbed})
+        }
+        delete ongoingAddProfileSessions[requestingUser.id]
+      })
   },
 };
 function handleUpdateSkills(question, question_embed, call_message, requestingUser, targetUser, ownedEidolon) {
@@ -241,7 +274,7 @@ function handleResponse(prompt_message, question, requestingUser, targetUser){
     case 'eidolon-skills':
       return updateEidolonSkillsStats(prompt_message, question, requestingUser, targetUser);
     case 'eidolon-elixirs':
-      filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || m.content.trim().toLowerCase() === "next") ;
+      filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || ["next", "cancel"].includes(m.content.trim().toLowerCase())) ;
       return prompt_message.channel.awaitMessages(filter, {
         max: 1,
         time: 600000,
@@ -252,6 +285,10 @@ function handleResponse(prompt_message, question, requestingUser, targetUser){
           if (message.content.trim().toLowerCase() === "next" && !message.attachments.size) {
             return
           }
+          if (message.content.trim().toLowerCase() === "cancel") {
+            throw('cancel')
+          }
+
           return handleEidolonUpdateMsg(question.question_label, message, targetUser)
             .then(() => {
               return message.channel.send({embed: {
@@ -261,9 +298,6 @@ function handleResponse(prompt_message, question, requestingUser, targetUser){
                 }})
             })
         })
-        .catch(collected => {
-          console.log(collected)
-        });
     case 'gear':
     case 'pneumas':
     case 'sacred-books':
@@ -277,7 +311,7 @@ function handleResponse(prompt_message, question, requestingUser, targetUser){
 }
 
 function handleSoulstonesAndGearResponse(prompt_message, question, requestingUser, targetUser) {
-  filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || m.content.trim().toLowerCase() === "next") ;
+  filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || ["next", "cancel"].includes(m.content.trim().toLowerCase())) ;
   return prompt_message.channel.awaitMessages(filter, {
     max: 1,
     time: 600000,
@@ -288,12 +322,13 @@ function handleSoulstonesAndGearResponse(prompt_message, question, requestingUse
       if (message.content.trim().toLowerCase() === "next" && !message.attachments.size) {
         return
       }
+      if (message.content.trim().toLowerCase() === "cancel") {
+        throw('cancel')
+      }
+
       return handleScreenshots(question.question_label, message, requestingUser, targetUser)
         .then(() => message.content.trim().toLowerCase() !== "next" && handleSoulstonesAndGearResponse(prompt_message, question, requestingUser, targetUser))
     })
-    .catch(collected => {
-      console.log(collected)
-    });
 }
 
 function handleScreenshots(process, message, requestingUser, targetUser) {
@@ -359,7 +394,7 @@ function handleScreenshots(process, message, requestingUser, targetUser) {
 }
 
 function updateEidolonSkillsStats(prompt_message, question, requestingUser, targetUser) {
-  filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || m.content.trim().toLowerCase() === "next");
+  filter = m => m.author.id === requestingUser.id && (!!m.embeds.length || !!m.attachments.size || ["next", "cancel"].includes(m.content.trim().toLowerCase()));
   return prompt_message.channel.awaitMessages(filter, {
     max: 1,
     time: 600000,
@@ -370,6 +405,10 @@ function updateEidolonSkillsStats(prompt_message, question, requestingUser, targ
       if (message.content.trim().toLowerCase() === "next" && !message.attachments.size) {
         return
       }
+      if (message.content.trim().toLowerCase() === "cancel") {
+        throw('cancel')
+      }
+
       return handleEidolonUpdateMsg(question.question_label, message, targetUser)
         .then(() => {
           return message.channel.send({embed: {
@@ -380,10 +419,6 @@ function updateEidolonSkillsStats(prompt_message, question, requestingUser, targ
         })
 
     })
-    .catch(collected => {
-      console.log(collected)
-    });
-
 }
 
 function overrideCurrentGearModal(prompt_message, process, requestingUser, targetUser, gear) {
@@ -548,10 +583,15 @@ function handleEidolonUpdateMsg(process, message, targetUser) {
 
 
 function handleEidoReactions(prompt_message, requestingUser, targetUser) {
-  let filter = m => m.author.id === requestingUser.id;
+  let filter = m => m.author.id === requestingUser.id && ["next", "cancel"].includes(m.content.trim().toLowerCase());
   return prompt_message.channel.awaitMessages(filter,{max: 1, time: 600000})
-    .then(function feedBackNext(reaction_prompt) {
+    .then(function feedBackNext(reactionMessage) {
       console.log(requestingUser);
+      reactionMessage = reactionMessage.first();
+      let messageContentLowerCase = reactionMessage.content.trim().toLowerCase();
+      if (messageContentLowerCase === "cancel") {
+        throw('cancel')
+      }
       let msg_reactions = prompt_message.reactions.cache.filter(reaction => ['cucu', 'flamerider', 'earthstrider', 'oakspirit', 'spitfire', 'siren', 'goblin','junglewyvern', 'monkeyking', 'aeriola', 'ninetails', 'frostdragon', 'nezha', 'gigi', 'pokermaster'].includes(reaction.emoji.name) && reaction.users.cache.has(requestingUser.id));
       const eido_emoji_mapping = {
         "cucu": "Cucurbit",
